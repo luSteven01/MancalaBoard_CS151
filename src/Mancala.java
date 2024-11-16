@@ -1,11 +1,12 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class Mancala {
+
     public static void main(String[] args) {
-        JFrame f = new JFrame("Mancala");
-        f.setBounds(100, 0, 1200, 800);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setVisible(true);
+        MancalaFrame mf = new MancalaFrame();
+        mf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mf.setVisible(true);
 
     }
 }

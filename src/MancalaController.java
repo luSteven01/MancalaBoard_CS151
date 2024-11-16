@@ -1,7 +1,16 @@
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MancalaController {
+public class MancalaController extends JPanel {
     private MancalaModel model;
-    private MancalaView view;
+
+    public MancalaController() {
+        super();
+
+        JLabel label = new JLabel("mancala controller");
+
+        this.add(label);
+    }
+}
 
