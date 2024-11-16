@@ -6,9 +6,11 @@ public class MancalaModel {
 
     private BoardPatternStrategy boardPattern;
     private ArrayList<ChangeListener> listeners;
+    private ArrayList<Pit> pits;
 
     public MancalaModel() {
         listeners = new ArrayList<ChangeListener>();
+        pits = new ArrayList<Pit>();
     }
 
     public void setBoardPattern(BoardPatternStrategy boardPattern) {
