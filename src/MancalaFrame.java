@@ -2,9 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MancalaFrame extends JFrame {
+
     private JPanel cardPanel;
     private StartScreen startScreen;
-    private MancalaController mc;
+    private MancalaModel model;
+    private MancalaController controller;
 
     public MancalaFrame() {
         super();
@@ -15,14 +17,14 @@ public class MancalaFrame extends JFrame {
         CardLayout cl = new CardLayout();
         cardPanel.setLayout(cl);
 
-        startScreen = new StartScreen();
-        mc = new MancalaController();
+        model = new MancalaModel();
+        startScreen = new StartScreen(model, e -> cl.show(cardPanel, "Controller"));
+        controller = new MancalaController(model);
 
         cardPanel.add(startScreen, "Start");
-        cardPanel.add(mc, "Controller");
-
-        startScreen.getStartButton().addActionListener(e -> cl.show(cardPanel, "Controller"));
+        cardPanel.add(controller, "Controller");
 
         this.add(cardPanel);
+
     }
 }
