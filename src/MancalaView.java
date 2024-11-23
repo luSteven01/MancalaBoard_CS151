@@ -1,32 +1,37 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class MancalaView extends JPanel {
-
-    private MancalaModel model;
+    private final MancalaModel model;
     private BoardPatternStrategy boardPattern;
 
     public MancalaView(MancalaModel model) {
-        super();
         this.model = model;
+        setLayout(new BorderLayout());
 
+        // Add listener to repaint the board when the pattern changes
         model.addChangeListener(e -> {
             boardPattern = model.getBoardPattern();
+            setBackground(boardPattern.color());
+            repaint();
         });
 
-        JLabel label = new JLabel("mancala view");
+        // Add pits panel, passing both regular pits and side pits
+        PitsPanel pitsPanel = new PitsPanel(model.getPits(), model.getMancalaA(), model.getMancalaB());
+        add(pitsPanel, BorderLayout.CENTER);
 
-        this.add(label);
-
+        setBackground(Color.WHITE);
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.setColor(boardPattern.color());
-        g2.drawString("sajdnfr", 100, 100);
+        // Example custom background painting
+        if (boardPattern != null) {
+            g2.setColor(boardPattern.color());
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        }
     }
-
 }

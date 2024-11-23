@@ -3,29 +3,27 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Represents an individual pit in the Mancala game.
- */
-public class Pit extends JPanel {
-    private static final int PIT_SIZE = 100; // Fixed size for the pit
-    private int stones; // Number of stones in the pit
+public class SidePit extends JPanel {
+    private static final int PIT_WIDTH = 100; // Width of the Mancala pit
+    private static final int PIT_HEIGHT = 200; // Height of the Mancala pit
+    private int stones; // Number of stones in the side pit
     private final JPanel stoneContainer; // Panel to hold stones
-    private final Color pitColor; // Background color of the pit
+    private final Color pitColor; // Background color of the side pit
 
     /**
-     * Constructs a pit with an initial number of stones.
-     * @param initialStones The initial number of stones in the pit.
-     * @param pitColor      The color of the pit.
+     * Constructs a side pit with an initial number of stones.
+     * @param initialStones The initial number of stones in the side pit.
+     * @param pitColor      The color of the side pit.
      */
-    public Pit(int initialStones, Color pitColor) {
+    public SidePit(int initialStones, Color pitColor) {
         this.stones = initialStones;
         this.pitColor = pitColor;
 
         // Set layout for the main panel
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(PIT_SIZE, PIT_SIZE));
-        setMaximumSize(new Dimension(PIT_SIZE, PIT_SIZE));
-        setMinimumSize(new Dimension(PIT_SIZE, PIT_SIZE));
+        setPreferredSize(new Dimension(PIT_WIDTH, PIT_HEIGHT));
+        setMaximumSize(new Dimension(PIT_WIDTH, PIT_HEIGHT));
+        setMinimumSize(new Dimension(PIT_WIDTH, PIT_HEIGHT));
 
         // Create a container for stones with FlowLayout
         stoneContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -39,25 +37,13 @@ public class Pit extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                pickUpStones();
+                // Logic for interacting with the side pit can go here
             }
         });
     }
 
     /**
-     * Picks up all stones from this pit.
-     */
-    public void pickUpStones() {
-        if (stones > 0) {
-            int pickedStones = stones;
-            stones = 0;
-            updateStones(0); // Remove all stones visually
-            firePropertyChange("pitClicked", -1, pickedStones); // Notify listeners
-        }
-    }
-
-    /**
-     * Adds stones to the pit.
+     * Adds stones to the side pit.
      * @param count The number of stones to add.
      */
     public void addStones(int count) {
@@ -66,8 +52,8 @@ public class Pit extends JPanel {
     }
 
     /**
-     * Updates the stones displayed in the pit.
-     * @param count The current number of stones in the pit.
+     * Updates the stones displayed in the side pit.
+     * @param count The current number of stones in the side pit.
      */
     private void updateStones(int count) {
         stoneContainer.removeAll(); // Clear previous stones
@@ -84,20 +70,20 @@ public class Pit extends JPanel {
     }
 
     /**
-     * Custom painting for the pit background.
+     * Custom painting for the side pit background.
      */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // Draw square pit background
+        // Draw rectangular side pit background
         g2.setColor(pitColor);
         g2.fillRect(0, 0, getWidth(), getHeight());
     }
 
     /**
-     * Returns the number of stones in the pit.
+     * Returns the number of stones in the side pit.
      * @return The number of stones.
      */
     public int getStones() {

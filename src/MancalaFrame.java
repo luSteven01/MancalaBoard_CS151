@@ -2,37 +2,30 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MancalaFrame extends JFrame {
-
-    private JPanel cardPanel;
-    private StartScreen startScreen;
-    private MancalaModel model;
-    private MancalaController controller;
-    private MancalaView view;
-    private JPanel gameScreen;
+    private final MancalaModel model;
 
     public MancalaFrame() {
-        super();
-        this.setTitle("Mancala");
-        this.setBounds(100, 0, 1200, 800);
+        setTitle("Mancala");
+        setBounds(100, 100, 1200, 800);
 
-        cardPanel = new JPanel();
-        CardLayout cl = new CardLayout();
-        cardPanel.setLayout(cl);
-
+        // Initialize the model
         model = new MancalaModel();
-        startScreen = new StartScreen(model, e -> cl.show(cardPanel, "game screen"));
-        controller = new MancalaController(model);
-        view = new MancalaView(model);
+        model.initializePits(4, Color.LIGHT_GRAY); // Initialize with 4 stones per pit
+        model.initializeSidePits(Color.DARK_GRAY); // Initialize side pits (Mancalas)
 
-        gameScreen = new JPanel();
-        gameScreen.setLayout(new BorderLayout());
-        gameScreen.add(controller, BorderLayout.SOUTH);
-        gameScreen.add(view, BorderLayout.CENTER);
+        // Create the view and controller
+        MancalaView view = new MancalaView(model);
+        MancalaController controller = new MancalaController(model);
 
-        cardPanel.add(startScreen, "Start");
-        cardPanel.add(gameScreen, "game screen");
+        // Create the game screen
+        JPanel gameScreen = new JPanel(new BorderLayout());
+        gameScreen.add(view, BorderLayout.CENTER); // Center: Game board view
+        gameScreen.add(controller, BorderLayout.SOUTH); // Bottom: Game controls (e.g., buttons)
 
-        this.add(cardPanel);
+        // Add the game screen to the frame
+        add(gameScreen);
 
+        // Set default close operation
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
