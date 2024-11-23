@@ -3,36 +3,35 @@ import java.awt.*;
 
 public class MancalaFrame extends JFrame {
 
-    private JPanel cardPanel;
-    private StartScreen startScreen;
-    private MancalaModel model;
-    private MancalaController controller;
-    private MancalaView view;
-    private JPanel gameScreen;
-
     public MancalaFrame() {
         super();
-        this.setTitle("Mancala");
-        this.setBounds(100, 0, 1200, 800);
+        setTitle("Mancala");
+        setBounds(100, 100, 900, 500); // Fixed size
+        setResizable(false);
 
-        cardPanel = new JPanel();
-        CardLayout cl = new CardLayout();
-        cardPanel.setLayout(cl);
+        MancalaModel model = new MancalaModel();
+        model.initializePits(4); // Initialize pits with 4 stones
 
-        model = new MancalaModel();
-        startScreen = new StartScreen(model, e -> cl.show(cardPanel, "game screen"));
-        controller = new MancalaController(model);
-        view = new MancalaView(model);
+        CardLayout cardLayout = new CardLayout();
+        JPanel cardPanel = new JPanel(cardLayout);
 
-        gameScreen = new JPanel();
-        gameScreen.setLayout(new BorderLayout());
-        gameScreen.add(controller, BorderLayout.SOUTH);
+        StartScreen startScreen = new StartScreen(model, e -> cardLayout.show(cardPanel, "Game"));
+
+        MancalaView view = new MancalaView(model);
+        MancalaController controller = new MancalaController(model);
+
+        JPanel gameScreen = new JPanel(new BorderLayout());
         gameScreen.add(view, BorderLayout.CENTER);
+        gameScreen.add(controller, BorderLayout.SOUTH);
 
         cardPanel.add(startScreen, "Start");
-        cardPanel.add(gameScreen, "game screen");
+        cardPanel.add(gameScreen, "Game");
 
-        this.add(cardPanel);
+        add(cardPanel);
+        cardLayout.show(cardPanel, "Start");
 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
+
+
