@@ -7,6 +7,5 @@ public class Mancala {
         MancalaFrame mf = new MancalaFrame();
         mf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mf.setVisible(true);
-
     }
 }

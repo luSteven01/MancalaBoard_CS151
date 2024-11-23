@@ -8,4 +8,8 @@ public class Pattern1 implements BoardPatternStrategy {
         return Color.RED;
     }
 
+    public Color pitColor()
+    {
+        return Color.WHITE;
+    }
 }

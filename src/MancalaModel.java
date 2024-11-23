@@ -1,5 +1,6 @@
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.util.List;
 import java.util.ArrayList;
 
 public class MancalaModel {
@@ -30,6 +31,14 @@ public class MancalaModel {
         ChangeEvent event = new ChangeEvent(this);
         for (ChangeListener l : listeners)
             l.stateChanged(event);
+    }
+
+    public void makeMove(int pitIndex) {
+        System.out.println("Pit clicked: " + pitIndex);
+    }
+
+    public List<Pit> getPits() {
+        return pits;
     }
 
 }

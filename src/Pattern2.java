@@ -3,7 +3,14 @@ import java.awt.*;
 public class Pattern2 implements BoardPatternStrategy {
 
     @Override
-    public Color color() {
-        return null;
+    public Color color()
+    {
+        return Color.BLUE;
+    }
+
+    @Override
+    public Color pitColor()
+    {
+        return Color.YELLOW;
     }
 }

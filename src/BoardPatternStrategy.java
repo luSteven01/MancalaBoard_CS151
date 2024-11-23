@@ -4,4 +4,5 @@ public interface BoardPatternStrategy {
 
     Color color();
 
+    Color pitColor();
 }

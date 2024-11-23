@@ -13,7 +13,10 @@ public class MancalaView extends JPanel {
 
         model.addChangeListener(e -> {
             boardPattern = model.getBoardPattern();
+            repaint();
         });
+
+        boardPattern = model.getBoardPattern();
 
         JLabel label = new JLabel("mancala view");
 
@@ -25,8 +28,15 @@ public class MancalaView extends JPanel {
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.setColor(boardPattern.color());
-        g2.drawString("sajdnfr", 100, 100);
-    }
+        if (boardPattern != null) {
+            g2.setColor(boardPattern.color());
+            g2.fillRect(0, 0, getWidth(), getHeight());
 
+
+            g2.setColor(boardPattern.pitColor());
+            for (int i = 0; i < 6; i++) {
+                g2.fillOval(50 + i * 100, 100, 80, 80);
+            }
+        }
+    }
 }
