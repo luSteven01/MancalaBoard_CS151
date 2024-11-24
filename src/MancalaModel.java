@@ -12,17 +12,21 @@ public class MancalaModel {
     private ArrayList<Pit> pits;
     private Pit mancalaA;
     private Pit mancalaB;
+    private ArrayList<Pit> previousState;
 
 
     public MancalaModel() {
         listeners = new ArrayList<ChangeListener>();
         pits = new ArrayList<Pit>();
+        previousState = new ArrayList<Pit>();
         boardPattern = new Pattern1(); // Set a default pattern
         initializeEmptyPits();
         stonesInitialized = false;
     }
 
     private void initializeEmptyPits() {
+        updatePreviousBoardState();
+
         for (int i = 0; i < 6; i++) { // player B's pits
             pits.add(new Pit());
         }
@@ -47,6 +51,8 @@ public class MancalaModel {
 
 
     public void initializePitsStones(int stonesPerPit) {
+        updatePreviousBoardState();
+
 //        pits.clear();
         for (int i = 0; i < 6; i++) { // player B's pits
 //            pits.add(new Pit(stonesPerPit));
@@ -71,7 +77,6 @@ public class MancalaModel {
         return mancalaB;
     }
 
-
     public void setGameScreen() {
         updateListeners();
     }
@@ -86,6 +91,8 @@ public class MancalaModel {
     }
 
     public void makeMove(Pit pit) {
+        updatePreviousBoardState();
+
         int pitNumber = -1;
         int pitSize = pits.size();
         // get pit number that was clicked
@@ -105,6 +112,14 @@ public class MancalaModel {
             stones--;
             pitNumber++;
         }
+        updateListeners();
+    }
+
+    public void undoMove() {
+        for (int i = 0; i < pits.size(); i++) {
+            pits.get(i).updateStones(previousState.get(i).getStones());
+        }
+        updateListeners();
     }
 
     public BoardPatternStrategy getBoardPattern() {
@@ -127,6 +142,13 @@ public class MancalaModel {
 
     public List<Pit> getPits() {
         return pits;
+    }
+
+    private void updatePreviousBoardState() {
+        previousState = new ArrayList<>();
+        for (Pit p : pits) {
+            previousState.add(p.clone());
+        }
     }
 
 }

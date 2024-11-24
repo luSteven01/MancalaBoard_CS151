@@ -29,6 +29,7 @@ public class MancalaController extends JPanel {
         }
 
         undoButton = new JButton("Undo");
+        undoButton.addActionListener(e -> model.undoMove());
 
         this.add(undoButton);
 
