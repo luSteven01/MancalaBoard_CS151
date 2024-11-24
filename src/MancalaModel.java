@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 public class MancalaModel {
 
-    private BoardPatternStrategy boardPattern;
     private ArrayList<ChangeListener> listeners;
+    private BoardPatternStrategy boardPattern;
+    private boolean stonesInitialized;
+
     private ArrayList<Pit> pits;
     private Pit mancalaA;
     private Pit mancalaB;
@@ -16,7 +18,18 @@ public class MancalaModel {
         listeners = new ArrayList<ChangeListener>();
         pits = new ArrayList<Pit>();
         boardPattern = new Pattern1(); // Set a default pattern
-        initializeSidePits();
+//        initializeSidePits();
+        initializeEmptyPits();
+        stonesInitialized = false;
+    }
+
+    private void initializeEmptyPits() {
+        for (int i = 0; i < 12; i++) { // Assume 12 pits total (6 per player)
+            pits.add(new Pit());
+        }
+        mancalaA = new Pit(0); // Player A's Mancala
+        mancalaB = new Pit(0); // Player B's Mancala
+        updateListeners();
     }
 
     private void initializeSidePits() {
@@ -26,12 +39,15 @@ public class MancalaModel {
 
 
     public void initializePits(int stonesPerPit) {
-        pits.clear();
+//        pits.clear();
         for (int i = 0; i < 12; i++) { // Assume 12 pits total (6 per player)
-            pits.add(new Pit(stonesPerPit));
+//            pits.add(new Pit(stonesPerPit));
+            Pit pit = pits.get(i);
+            pit.updateStones(stonesPerPit);
         }
         mancalaA = new Pit(0); // Player A's Mancala
         mancalaB = new Pit(0); // Player B's Mancala
+        stonesInitialized = true;
         updateListeners();
     }
 
@@ -43,9 +59,18 @@ public class MancalaModel {
         return mancalaB;
     }
 
+
+    public void setGameScreen() {
+        updateListeners();
+    }
+
+    public boolean isStonesInitialized() {
+        return stonesInitialized;
+    }
+
     public void setBoardPattern(BoardPatternStrategy boardPattern) {
         this.boardPattern = boardPattern;
-        updateListeners();
+//        updateListeners();
     }
 
     public BoardPatternStrategy getBoardPattern() {

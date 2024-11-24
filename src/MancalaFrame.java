@@ -10,12 +10,14 @@ public class MancalaFrame extends JFrame {
         setResizable(false);
 
         MancalaModel model = new MancalaModel();
-        model.initializePits(4); // Initialize pits with 4 stones
 
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel(cardLayout);
 
-        StartScreen startScreen = new StartScreen(model, e -> cardLayout.show(cardPanel, "Game"));
+        StartScreen startScreen = new StartScreen(model, e -> {
+            cardLayout.show(cardPanel, "Game");
+            model.setGameScreen();
+        });
 
         MancalaView view = new MancalaView(model);
         MancalaController controller = new MancalaController(model);
