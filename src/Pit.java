@@ -75,6 +75,16 @@ public class Pit extends JPanel {
         repaint();
     }
 
+    public Pit clone() {
+        Pit clone = new Pit();
+        clone.updateStones(stones);
+        return clone;
+    }
+
+    public int getStones() {
+        return stones;
+    }
+
     public void setOnPress(Runnable onPress) {
         this.onPress = onPress;
     }
