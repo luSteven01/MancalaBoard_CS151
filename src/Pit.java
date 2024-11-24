@@ -1,12 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Pit extends JPanel {
 
     private static final int PIT_SIZE = 60; // Fixed size for pits
     private int stones; // Number of stones in the pit
     private final ArrayList<JLabel> stoneIcons;
+    private Runnable onPress;
 
     public Pit() {
         this.stones = 0;
@@ -17,6 +20,9 @@ public class Pit extends JPanel {
         setMaximumSize(new Dimension(PIT_SIZE, PIT_SIZE));
         setMinimumSize(new Dimension(PIT_SIZE, PIT_SIZE));
         setBackground(Color.LIGHT_GRAY); // Default pit background
+
+        MouseListeners listeners = new MouseListeners();
+        addMouseListener(listeners);
     }
 
     public Pit(int initialStones) {
@@ -29,6 +35,9 @@ public class Pit extends JPanel {
         setMinimumSize(new Dimension(PIT_SIZE, PIT_SIZE));
         setBackground(Color.LIGHT_GRAY); // Default pit background
         updateStones(initialStones);
+
+        MouseListeners listeners = new MouseListeners();
+        addMouseListener(listeners);
     }
 
     public void addStones(int count) {
@@ -43,7 +52,13 @@ public class Pit extends JPanel {
         return removed;
     }
 
+    public void increment() {
+        stones++;
+        updateStones(stones);
+    }
+
     public void updateStones(int count) {
+        stones = count;
         removeAll(); // Clear existing stones
         stoneIcons.clear();
 
@@ -58,5 +73,16 @@ public class Pit extends JPanel {
         }
         revalidate();
         repaint();
+    }
+
+    public void setOnPress(Runnable onPress) {
+        this.onPress = onPress;
+    }
+
+    private class MouseListeners extends MouseAdapter {
+        public void mousePressed(MouseEvent event) {
+            if (onPress != null)
+                onPress.run();
+        }
     }
 }
