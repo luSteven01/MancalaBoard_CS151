@@ -8,6 +8,17 @@ public class Pit extends JPanel {
     private int stones; // Number of stones in the pit
     private final ArrayList<JLabel> stoneIcons;
 
+    public Pit() {
+        this.stones = 0;
+        this.stoneIcons = new ArrayList<>();
+
+        setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Align stones neatly
+        setPreferredSize(new Dimension(PIT_SIZE, PIT_SIZE));
+        setMaximumSize(new Dimension(PIT_SIZE, PIT_SIZE));
+        setMinimumSize(new Dimension(PIT_SIZE, PIT_SIZE));
+        setBackground(Color.LIGHT_GRAY); // Default pit background
+    }
+
     public Pit(int initialStones) {
         this.stones = initialStones;
         this.stoneIcons = new ArrayList<>();
@@ -32,7 +43,7 @@ public class Pit extends JPanel {
         return removed;
     }
 
-    private void updateStones(int count) {
+    public void updateStones(int count) {
         removeAll(); // Clear existing stones
         stoneIcons.clear();
 
