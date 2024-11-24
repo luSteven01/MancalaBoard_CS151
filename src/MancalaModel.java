@@ -18,35 +18,47 @@ public class MancalaModel {
         listeners = new ArrayList<ChangeListener>();
         pits = new ArrayList<Pit>();
         boardPattern = new Pattern1(); // Set a default pattern
-//        initializeSidePits();
         initializeEmptyPits();
         stonesInitialized = false;
     }
 
     private void initializeEmptyPits() {
-        for (int i = 0; i < 12; i++) { // Assume 12 pits total (6 per player)
+        for (int i = 0; i < 6; i++) { // player B's pits
             pits.add(new Pit());
         }
-        mancalaA = new Pit(0); // Player A's Mancala
-        mancalaB = new Pit(0); // Player B's Mancala
+        // Player B's Mancala
+        mancalaB = new Pit();
+        pits.add(mancalaB);
+
+        for (int i = 0; i < 6; i++) { // player A's pits
+            pits.add(new Pit());
+        }
+        // Player A's Mancala
+        mancalaA = new Pit();
+        pits.add(mancalaA);
+
         updateListeners();
     }
 
     private void initializeSidePits() {
-        mancalaA = new Pit(0); // Player A's Mancala
-        mancalaB = new Pit(0); // Player B's Mancala
+        mancalaA = new Pit(); // Player A's Mancala
+        mancalaB = new Pit(); // Player B's Mancala
     }
 
 
-    public void initializePits(int stonesPerPit) {
+    public void initializePitsStones(int stonesPerPit) {
 //        pits.clear();
-        for (int i = 0; i < 12; i++) { // Assume 12 pits total (6 per player)
+        for (int i = 0; i < 6; i++) { // player B's pits
 //            pits.add(new Pit(stonesPerPit));
             Pit pit = pits.get(i);
             pit.updateStones(stonesPerPit);
         }
-        mancalaA = new Pit(0); // Player A's Mancala
-        mancalaB = new Pit(0); // Player B's Mancala
+
+        for (int i = 7; i < 13; i++) { // player A's pits
+            Pit pit = pits.get(i);
+            pit.updateStones(stonesPerPit);
+        }
+
         stonesInitialized = true;
         updateListeners();
     }
@@ -71,6 +83,28 @@ public class MancalaModel {
     public void setBoardPattern(BoardPatternStrategy boardPattern) {
         this.boardPattern = boardPattern;
 //        updateListeners();
+    }
+
+    public void makeMove(Pit pit) {
+        int pitNumber = -1;
+        int pitSize = pits.size();
+        // get pit number that was clicked
+        for (int i = 0; i < pitSize; i++) {
+            if (pits.get(i) == pit)
+                pitNumber = i;
+        }
+
+        int stones = pit.removeStones();
+        pitNumber += 1;
+
+        // moves the stones across pits
+        while (stones > 0) {
+            if (pitNumber >= pitSize)
+                pitNumber = pitNumber - pitSize;
+            pits.get(pitNumber).increment();
+            stones--;
+            pitNumber++;
+        }
     }
 
     public BoardPatternStrategy getBoardPattern() {

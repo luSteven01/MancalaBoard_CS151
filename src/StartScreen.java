@@ -16,7 +16,10 @@ public class StartScreen extends JPanel {
         pattern1Button.addActionListener(e -> model.setBoardPattern(new Pattern1()));
         pattern2Button.addActionListener(e -> model.setBoardPattern(new Pattern2()));
 
-        startGameButton.addActionListener(startGameAction);
+        startGameButton.addActionListener(e -> {
+            startGameAction.actionPerformed(e);
+            model.setGameScreen();
+        });
 
         add(text);
         add(pattern1Button);

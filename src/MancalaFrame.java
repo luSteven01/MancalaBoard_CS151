@@ -6,7 +6,7 @@ public class MancalaFrame extends JFrame {
     public MancalaFrame() {
         super();
         setTitle("Mancala");
-        setBounds(100, 100, 900, 500); // Fixed size
+        setBounds(100, 100, 1020, 500); // Fixed size
         setResizable(false);
 
         MancalaModel model = new MancalaModel();
@@ -14,10 +14,7 @@ public class MancalaFrame extends JFrame {
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel(cardLayout);
 
-        StartScreen startScreen = new StartScreen(model, e -> {
-            cardLayout.show(cardPanel, "Game");
-            model.setGameScreen();
-        });
+        StartScreen startScreen = new StartScreen(model, e -> cardLayout.show(cardPanel, "Game"));
 
         MancalaView view = new MancalaView(model);
         MancalaController controller = new MancalaController(model);

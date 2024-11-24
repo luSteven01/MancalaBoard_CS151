@@ -18,12 +18,15 @@ public class MancalaController extends JPanel {
         super();
         this.model = model;
 
-        pits = model.getPits();
-
         model.addChangeListener(e -> {
             if (!model.isStonesInitialized())
                 askPitStones();
         });
+
+        pits = model.getPits();
+        for (Pit p : pits) {
+            p.setOnPress(() -> model.makeMove(p));
+        }
 
         undoButton = new JButton("Undo");
 
@@ -72,7 +75,7 @@ public class MancalaController extends JPanel {
                 int stones = Integer.parseInt(stoneInput);
                 if (stones == 3 || stones == 4) {
                     enteredStoneNumber = true;
-                    model.initializePits(stones);
+                    model.initializePitsStones(stones);
                     JOptionPane.showMessageDialog(null, "Initialized pits to " + stones, "Pits initialized successfully", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else {
