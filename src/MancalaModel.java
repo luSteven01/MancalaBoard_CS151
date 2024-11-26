@@ -8,7 +8,7 @@ public class MancalaModel {
     private ArrayList<ChangeListener> listeners;
     private BoardPatternStrategy boardPattern;
     private boolean stonesInitialized;
-
+    private String currentPlayer;
     private ArrayList<Pit> pits;
     private Pit mancalaA;
     private Pit mancalaB;
@@ -22,6 +22,7 @@ public class MancalaModel {
         boardPattern = new Pattern1(); // Set a default pattern
         initializeEmptyPits();
         stonesInitialized = false;
+        currentPlayer = "A";
     }
 
     private void initializeEmptyPits() {
@@ -95,23 +96,41 @@ public class MancalaModel {
 
         int pitNumber = -1;
         int pitSize = pits.size();
-        // get pit number that was clicked
         for (int i = 0; i < pitSize; i++) {
-            if (pits.get(i) == pit)
+            if (pits.get(i) == pit) {
                 pitNumber = i;
+                break;
+            }
         }
-
         int stones = pit.removeStones();
         pitNumber += 1;
 
-        // moves the stones across pits
         while (stones > 0) {
-            if (pitNumber >= pitSize)
+            if (pitNumber >= pitSize) {
                 pitNumber = pitNumber - pitSize;
+            }
+
+            if ((currentPlayer.equals("A") && pitNumber ==13) || (currentPlayer.equals("B") && pitNumber ==6)) {
+                pitNumber++;
+                continue;
+            }
             pits.get(pitNumber).increment();
             stones--;
             pitNumber++;
         }
+        handleSpecialRules(pitNumber);
+        pitNumber--;
+
+        if (checkGameOver()) {
+            updateListeners();
+            return;
+        }
+
+        if ((currentPlayer.equals("A") && pitNumber ==13) || (currentPlayer.equals("B") && pitNumber ==6)) {
+            updateListeners();
+            return;
+        }
+        switchPlayer();
         updateListeners();
     }
 
@@ -122,8 +141,29 @@ public class MancalaModel {
         updateListeners();
     }
 
+    private void handleSpecialRules(int currentIndex)
+    {
+        if((currentPlayer.equals("A") && currentIndex <= 7 && currentIndex <= 12 && pits.get(currentIndex).getStones() == 1) ||
+                (currentPlayer.equals("B") && currentIndex >= 0 && currentIndex <= 5 && pits.get(currentIndex).getStones() == 1))
+        {
+            int oppositeIndex = 12 - currentIndex;
+            int capturedStones = pits.get(oppositeIndex).removeStones() + pits.get(currentIndex).removeStones();
+
+            if (currentPlayer.equals("A")) {
+                mancalaA.increment(capturedStones);
+            } else {
+                mancalaB.increment(capturedStones);
+            }
+        }
+    }
+
     public BoardPatternStrategy getBoardPattern() {
         return boardPattern;
+    }
+
+    public String getCurrentPlayer()
+    {
+        return currentPlayer;
     }
 
     public void addChangeListener(ChangeListener cl) {
@@ -151,4 +191,56 @@ public class MancalaModel {
         }
     }
 
+    private void switchPlayer()
+    {
+        currentPlayer = currentPlayer.equals("A") ? "B" : "A";
+    }
+
+    private boolean checkGameOver()
+    {
+        boolean playerAEmpty = true;
+        boolean playerBEmpty = true;
+
+        for (int i = 7; i <= 12; i++) {
+            if (pits.get(i).getStones() > 0) {
+                playerAEmpty = false;
+                break;
+            }
+        }
+
+        for (int i = 0; i <= 5; i++) {
+            if (pits.get(i).getStones() > 0) {
+                playerBEmpty = false;
+                break;
+            }
+        }
+        if (playerAEmpty || playerBEmpty) {
+            endGame();
+            return true;
+        }
+        return false;
+    }
+
+    private void endGame()
+    {
+        for (int i = 0; i <= 5; i++) {
+            mancalaB.increment(pits.get(i).removeStones());
+        }
+
+        for (int i = 7; i <= 12; i++) {
+            mancalaA.increment(pits.get(i).removeStones());
+        }
+
+        int playerAStones = mancalaA.getStones();
+        int playerBStones = mancalaB.getStones();
+
+        if (playerAStones > playerBStones) {
+            System.out.println("Player A wins with a total of " + playerAStones + " stones.");
+        } else if (playerBStones > playerAStones) {
+            System.out.println("Player B wins with a total of " + playerBStones + " stones.");
+        } else {
+            System.out.println("It's a tie!");
+        }
+        updateListeners();
+    }
 }

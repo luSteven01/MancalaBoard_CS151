@@ -57,6 +57,11 @@ public class Pit extends JPanel {
         updateStones(stones);
     }
 
+    public void increment(int stonesToAdd) {
+        stones += stonesToAdd;
+        updateStones(stones);
+    }
+
     public void updateStones(int count) {
         stones = count;
         removeAll(); // Clear existing stones
