@@ -55,9 +55,7 @@ public class MancalaModel {
     public void initializePitsStones(int stonesPerPit) {
         updatePreviousBoardState();
 
-        pits.clear();
         for (int i = 0; i < 6; i++) { // player B's pits
-            pits.add(new Pit(stonesPerPit));
             Pit pit = pits.get(i);
             pit.updateStones(stonesPerPit);
         }
