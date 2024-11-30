@@ -113,62 +113,60 @@ public class MancalaModel {
         return true;
     }
 
-        public void makeMove(Pit pit)
-        {
-            if (!isPlayerTurnValid(pit)) {
-                System.out.println("It's not your turn.");
-                return;
+    public void makeMove(Pit pit) {
+        if (!isPlayerTurnValid(pit)) {
+            System.out.println("It's not your turn.");
+            return;
+        }
+        updatePreviousBoardState();
+
+        int pitNumber = -1;
+        int pitSize = pits.size();
+        for (int i = 0; i < pitSize; i++) {
+            if (pits.get(i) == pit) {
+                pitNumber = i;
+                break;
             }
-            updatePreviousBoardState();
+        }
 
-            int pitNumber = -1;
-            int pitSize = pits.size();
-            for (int i = 0; i < pitSize; i++) {
-                if (pits.get(i) == pit) {
-                    pitNumber = i;
-                    break;
-                }
-            }
+        if (pitNumber == -1) {
+            System.out.println("Invalid pit selection.");
+            return;
+        }
 
-            if (pitNumber == -1) {
-                System.out.println("Invalid pit selection.");
-                return;
-            }
+        int stones = pit.removeStones();
+        pitNumber += 1;
 
-            int stones = pit.removeStones();
-            pitNumber += 1;
-
-            while (stones > 0) {
-                if (pitNumber >= pitSize) {
-                    pitNumber = pitNumber - pitSize;
-                }
-
-                if ((currentPlayer.equals("A") && pitNumber == 13) || (currentPlayer.equals("B") && pitNumber == 6)) {
-                    pitNumber++;
-                    continue;
-                }
-
-                pits.get(pitNumber).increment();
-                stones--;
-                pitNumber++;
-            }
-
-            handleSpecialRules(pitNumber);
-            handleCapture(pitNumber);
-            pitNumber--;
-
-            if (checkGameOver()) {
-                updateListeners();
-                return;
+        while (stones > 0) {
+            if (pitNumber >= pitSize) {
+                pitNumber = pitNumber - pitSize;
             }
 
             if ((currentPlayer.equals("A") && pitNumber == 13) || (currentPlayer.equals("B") && pitNumber == 6)) {
-                updateListeners();
-                return;
+                pitNumber++;
+                continue;
             }
-            switchPlayer();
-            updateListeners();
+
+            pits.get(pitNumber).increment();
+            stones--;
+            pitNumber++;
         }
+
+        handleSpecialRules(pitNumber);
+        handleCapture(pitNumber);
+        pitNumber--;
+
+        if (checkGameOver()) {
+            updateListeners();
+            return;
+        }
+
+        if ((currentPlayer.equals("A") && pitNumber == 13) || (currentPlayer.equals("B") && pitNumber == 6)) {
+            updateListeners();
+            return;
+        }
+        switchPlayer();
+        updateListeners();
     }
 
     public void undoMove() {
@@ -186,29 +184,25 @@ public class MancalaModel {
         else undoCountB++;
 
         updateListeners();
-}
-
-
-    private void handleCapture(int currentIndex)
-    {
-     if ((currentPlayer.equals("A") && currentIndex >= 7 && currentIndex <= 12  && pits.get(currentIndex).getStones() == 1) ||
-             (currentPlayer.equals("B") && currentIndex >= 0 && currentIndex <= 5 && pits.get(currentIndex).getStones() ==1))
-     {
-         int oppositeIndex = 12 - currentIndex;
-         int capturedStones = pits.get(oppositeIndex).removeStones() + pits.get(currentIndex).removeStones();
-         if (currentPlayer.equals("A")) {
-             mancalaA.increment(capturedStones);
-         } else {
-             mancalaB.increment(capturedStones);
-         }
-     }
     }
 
-    private void handleSpecialRules(int currentIndex)
-    {
-        if((currentPlayer.equals("A") && currentIndex <= 7 && currentIndex <= 12 && pits.get(currentIndex).getStones() == 1) ||
-                (currentPlayer.equals("B") && currentIndex >= 0 && currentIndex <= 5 && pits.get(currentIndex).getStones() == 1))
-        {
+
+    private void handleCapture(int currentIndex) {
+        if ((currentPlayer.equals("A") && currentIndex >= 7 && currentIndex <= 12 && pits.get(currentIndex).getStones() == 1) ||
+                (currentPlayer.equals("B") && currentIndex >= 0 && currentIndex <= 5 && pits.get(currentIndex).getStones() == 1)) {
+            int oppositeIndex = 12 - currentIndex;
+            int capturedStones = pits.get(oppositeIndex).removeStones() + pits.get(currentIndex).removeStones();
+            if (currentPlayer.equals("A")) {
+                mancalaA.increment(capturedStones);
+            } else {
+                mancalaB.increment(capturedStones);
+            }
+        }
+    }
+
+    private void handleSpecialRules(int currentIndex) {
+        if ((currentPlayer.equals("A") && currentIndex <= 7 && currentIndex <= 12 && pits.get(currentIndex).getStones() == 1) ||
+                (currentPlayer.equals("B") && currentIndex >= 0 && currentIndex <= 5 && pits.get(currentIndex).getStones() == 1)) {
             int oppositeIndex = 12 - currentIndex;
             int capturedStones = pits.get(oppositeIndex).removeStones() + pits.get(currentIndex).removeStones();
 
@@ -224,8 +218,7 @@ public class MancalaModel {
         return boardPattern;
     }
 
-    public String getCurrentPlayer()
-    {
+    public String getCurrentPlayer() {
         return currentPlayer;
     }
 
@@ -254,13 +247,11 @@ public class MancalaModel {
         }
     }
 
-    private void switchPlayer()
-    {
+    private void switchPlayer() {
         currentPlayer = currentPlayer.equals("A") ? "B" : "A";
     }
 
-    private boolean checkGameOver()
-    {
+    private boolean checkGameOver() {
         boolean playerAEmpty = true;
         boolean playerBEmpty = true;
 
@@ -284,8 +275,7 @@ public class MancalaModel {
         return false;
     }
 
-    private void endGame()
-    {
+    private void endGame() {
         for (int i = 0; i <= 5; i++) {
             mancalaB.increment(pits.get(i).removeStones());
         }
@@ -306,3 +296,4 @@ public class MancalaModel {
         }
         updateListeners();
     }
+}

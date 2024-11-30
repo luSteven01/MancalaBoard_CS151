@@ -18,6 +18,8 @@ public class MancalaView extends JPanel {
             repaint();
         });
 
+        setLayout(new BorderLayout());
+        BoardPatternStrategy initialPattern = model.getBoardPattern();
         boardPanel = new BoardPanel(model.getPits(), model.getMancalaA(), model.getMancalaB(), initialPattern);
         add(boardPanel, BorderLayout.CENTER);
     }
