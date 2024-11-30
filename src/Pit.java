@@ -40,10 +40,10 @@ public class Pit extends JPanel {
         addMouseListener(listeners);
     }
 
-    public void addStones(int count) {
-        stones += count;
-        updateStones(stones);
-    }
+//    public void addStones(int count) {
+//        stones += count;
+//        updateStones(stones);
+//    }
 
     public int removeStones() {
         int removed = stones;

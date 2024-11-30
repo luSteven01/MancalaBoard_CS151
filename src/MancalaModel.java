@@ -1,3 +1,4 @@
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.util.List;
@@ -87,25 +88,24 @@ public class MancalaModel {
 
     public void setBoardPattern(BoardPatternStrategy boardPattern) {
         this.boardPattern = boardPattern;
-//        updateListeners();
     }
 
     private boolean isPlayerTurnValid(Pit pit) {
         int pitIndex = pits.indexOf(pit);
         if (pitIndex == -1) {
-            System.out.println("Invalid pit selected.");
+            JOptionPane.showMessageDialog(null, "Invalid pit selected.", "Invalid move", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         if (currentPlayer.equals("A") && (pitIndex < 7 || pitIndex > 12)) {
-            System.out.println("Player A can only play pits 7 to 12.");
+            JOptionPane.showMessageDialog(null, "Player A can only play pits A1 to A6.", "Invalid move", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         if (currentPlayer.equals("B") && (pitIndex < 0 || pitIndex > 5)) {
-            System.out.println("Player B can only play pits 0 to 5.");
+            JOptionPane.showMessageDialog(null, "Player B can only play pits B1 to B6.", "Invalid move", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         if (pits.get(pitIndex).getStones() == 0) {
-            System.out.println("Selected pit is empty. Choose a pit with stones.");
+            JOptionPane.showMessageDialog(null, "Selected pit is empty. Choose a pit with stones.", "Invalid move", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         return true;
@@ -113,7 +113,7 @@ public class MancalaModel {
 
     public void makeMove(Pit pit) {
         if (!isPlayerTurnValid(pit)) {
-            System.out.println("It's not your turn.");
+//            JOptionPane.showMessageDialog(null, "It's not your turn.", "Invalid move", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         updatePreviousBoardState();
@@ -128,7 +128,7 @@ public class MancalaModel {
         }
 
         if (pitNumber == -1) {
-            System.out.println("Invalid pit selection.");
+            JOptionPane.showMessageDialog(null, "Invalid pit selection", "Invalid move", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -140,7 +140,7 @@ public class MancalaModel {
                 pitNumber = pitNumber - pitSize;
             }
 
-            if ((currentPlayer.equals("A") && pitNumber == 13) || (currentPlayer.equals("B") && pitNumber == 6)) {
+            if ((currentPlayer.equals("A") && pitNumber == 6) || (currentPlayer.equals("B") && pitNumber == 13)) {
                 pitNumber++;
                 continue;
             }
@@ -150,9 +150,8 @@ public class MancalaModel {
             pitNumber++;
         }
 
-        handleSpecialRules(pitNumber);
-        handleCapture(pitNumber);
         pitNumber--;
+        handleCapture(pitNumber);
 
         if (checkGameOver()) {
             updateListeners();
@@ -170,7 +169,7 @@ public class MancalaModel {
     public void undoMove() {
         if ((currentPlayer.equals("A") && undoCountA >= MAX_UNDO) ||
                 (currentPlayer.equals("B") && undoCountB >= MAX_UNDO)) {
-            System.out.println("Undo limit has been reached. No more allowed.");
+            JOptionPane.showMessageDialog(null, "Undo limit has been reached. No more allowed.", "Invalid move", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -198,20 +197,6 @@ public class MancalaModel {
         }
     }
 
-    private void handleSpecialRules(int currentIndex) {
-        if ((currentPlayer.equals("A") && currentIndex <= 7 && currentIndex <= 12 && pits.get(currentIndex).getStones() == 1) ||
-                (currentPlayer.equals("B") && currentIndex >= 0 && currentIndex <= 5 && pits.get(currentIndex).getStones() == 1)) {
-            int oppositeIndex = 12 - currentIndex;
-            int capturedStones = pits.get(oppositeIndex).removeStones() + pits.get(currentIndex).removeStones();
-
-            if (currentPlayer.equals("A")) {
-                mancalaA.increment(capturedStones);
-            } else {
-                mancalaB.increment(capturedStones);
-            }
-        }
-    }
-
     public BoardPatternStrategy getBoardPattern() {
         return boardPattern;
     }
@@ -230,9 +215,9 @@ public class MancalaModel {
             l.stateChanged(event);
     }
 
-    public void makeMove(int pitIndex) {
-        System.out.println("Pit clicked: " + pitIndex);
-    }
+//    public void makeMove(int pitIndex) {
+//        System.out.println("Pit clicked: " + pitIndex);
+//    }
 
     public List<Pit> getPits() {
         return pits;
@@ -286,11 +271,11 @@ public class MancalaModel {
         int playerBStones = mancalaB.getStones();
 
         if (playerAStones > playerBStones) {
-            System.out.println("Player A wins with a total of " + playerAStones + " stones.");
+            JOptionPane.showMessageDialog(null, "Player A wins with a total of " + playerAStones + " stones.", "Player A wins!", JOptionPane.INFORMATION_MESSAGE);
         } else if (playerBStones > playerAStones) {
-            System.out.println("Player B wins with a total of " + playerBStones + " stones.");
+            JOptionPane.showMessageDialog(null, "Player B wins with a total of " + playerBStones + " stones.", "Player B wins!", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            System.out.println("It's a tie!");
+            JOptionPane.showMessageDialog(null, "Both player has " + playerAStones + " stones.", "It's a tie!", JOptionPane.INFORMATION_MESSAGE);
         }
         updateListeners();
     }
