@@ -14,13 +14,13 @@ public class MancalaView extends JPanel {
             BoardPatternStrategy initialPattern = model.getBoardPattern();
             BoardPatternStrategy boardPattern = model.getBoardPattern();
             setBackground(boardPattern.color()); // Update background color
-            boardPanel.updatePattern(boardPattern); // Update pits dynamically
+            boardPanel.updatePattern(boardPattern, model.getCurrentPlayer()); // Update pits dynamically
             repaint();
         });
 
         setLayout(new BorderLayout());
         BoardPatternStrategy initialPattern = model.getBoardPattern();
-        boardPanel = new BoardPanel(model.getPits(), model.getMancalaA(), model.getMancalaB(), initialPattern);
+        boardPanel = new BoardPanel(model.getPits(), model.getMancalaA(), model.getMancalaB(), initialPattern, "A");
         add(boardPanel, BorderLayout.CENTER);
     }
 }

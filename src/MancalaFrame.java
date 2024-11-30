@@ -6,7 +6,7 @@ public class MancalaFrame extends JFrame {
     public MancalaFrame() {
         super();
         setTitle("Mancala");
-        setBounds(100, 100, 1020, 500); // Fixed size
+        setBounds(100, 100, 1020, 550); // Fixed size
         setResizable(false);
 
         MancalaModel model = new MancalaModel();
