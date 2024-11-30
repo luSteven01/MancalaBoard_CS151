@@ -19,6 +19,7 @@ public class BoardPanel extends JPanel {
         // Left Mancala (Player B)
         mancalaB.setBounds(20, 30, mancalaWidth, mancalaHeight); // Centered vertically
         mancalaB.setBackground(boardPattern.pitColor()); // Apply pattern color
+        mancalaB.disable();
         add(mancalaB);
 
         // Right Mancala (Player A)
