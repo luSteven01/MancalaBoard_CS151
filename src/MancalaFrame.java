@@ -1,6 +1,17 @@
+/**
+ * Fall 2024 - Doctor Kim's CS151
+ * CS151 Team Project - Mancala
+ * @author Monica Zhang
+ * @author Steven Lu
+ * @version 1.0 11/29/24
+ */
+
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class models the game screen of a mancala game.
+ */
 public class MancalaFrame extends JFrame {
 
     public MancalaFrame() {

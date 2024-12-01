@@ -1,23 +1,38 @@
+/**
+ * Fall 2024 - Doctor Kim's CS151
+ * CS151 Team Project - Mancala
+ * @author Monica Zhang
+ * @author Billy Porras-Molina
+ * @author Steven Lu
+ * @version 1.0 11/29/24
+ */
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * This class serves as the data and logic of the mancala game. <br>
+ * It maintains list of pits, undo count, the players, player's mancala, and the current player. <br>
+ * Have a list of listeners to tell the views to reflect the change after the player does something.
+ */
 public class MancalaModel {
 
     private ArrayList<ChangeListener> listeners;
     private BoardPatternStrategy boardPattern;
     private boolean stonesInitialized;
     private String currentPlayer;
+
     private ArrayList<Pit> pits;
     private Pit mancalaA;
     private Pit mancalaB;
+
     private ArrayList<Pit> previousState;
     private int undoCountA = 0;
     private int undoCountB = 0;
     private final int MAX_UNDO = 3;
-
 
     public MancalaModel() {
         listeners = new ArrayList<ChangeListener>();
@@ -46,12 +61,6 @@ public class MancalaModel {
 
         updateListeners();
     }
-
-    private void initializeSidePits() {
-        mancalaA = new Pit(); // Player A's Mancala
-        mancalaB = new Pit(); // Player B's Mancala
-    }
-
 
     public void initializePitsStones(int stonesPerPit) {
         updatePreviousBoardState();
@@ -113,7 +122,6 @@ public class MancalaModel {
 
     public void makeMove(Pit pit) {
         if (!isPlayerTurnValid(pit)) {
-//            JOptionPane.showMessageDialog(null, "It's not your turn.", "Invalid move", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         updatePreviousBoardState();
@@ -214,10 +222,6 @@ public class MancalaModel {
         for (ChangeListener l : listeners)
             l.stateChanged(event);
     }
-
-//    public void makeMove(int pitIndex) {
-//        System.out.println("Pit clicked: " + pitIndex);
-//    }
 
     public List<Pit> getPits() {
         return pits;

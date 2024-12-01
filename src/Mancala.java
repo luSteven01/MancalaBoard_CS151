@@ -1,6 +1,15 @@
-import javax.swing.*;
-import java.awt.*;
+/**
+ * Fall 2024 - Doctor Kim's CS151
+ * CS151 Team Project - Mancala
+ * @author Monica Zhang
+ * @version 1.0 11/15/24
+ */
 
+import javax.swing.*;
+
+/**
+ * This class models a mancala game.
+ */
 public class Mancala {
 
     public static void main(String[] args) {
