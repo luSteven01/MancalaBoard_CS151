@@ -1,7 +1,19 @@
+/**
+ * Fall 2024 - Doctor Kim's CS151
+ * CS151 Team Project - Mancala
+ * @author Monica Zhang
+ * @author Steven Lu
+ * @version 1.0 11/23/24
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * This class models the start screen of the mancala game. <br>
+ * It lets the players select a pattern the game board will be in and informs MancalaModel.
+ */
 public class StartScreen extends JPanel {
 
     public StartScreen(MancalaModel model, ActionListener startGameAction) {

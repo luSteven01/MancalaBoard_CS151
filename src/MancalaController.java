@@ -1,6 +1,19 @@
+/**
+ * Fall 2024 - Doctor Kim's CS151
+ * CS151 Team Project - Mancala
+ * @author Monica Zhang
+ * @author Billy Porras-Molina
+ * @version 1.0 11/29/24
+ */
+
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * This class allows interactions between the game board and players. <br>
+ * It has components for the player to interact with, and tells MancalaModel object the player made a move. <br>
+ * A player can set the amount of stones per pit, make a move, and undo their move.
+ */
 public class MancalaController extends JPanel {
 
     private MancalaModel model;
@@ -25,34 +38,7 @@ public class MancalaController extends JPanel {
         undoButton.addActionListener(e -> model.undoMove());
 
         this.add(undoButton);
-
-//        addMouseListener(new MouseAdapter() {
-//            public void mouseClicked(MouseEvent e) {
-//                int pitIndex = getClickedPit(e.getX(), e.getY());
-//                if (pitIndex >= 0) {
-//                    model.makeMove(pitIndex);
-//                }
-//            }
-//        });
     }
-
-//    private int getClickedPit(int x, int y) {
-//        int pitCount = model.getPits().size();
-//        int pitHeight = 80;
-//        int pitWidth = 100;
-//        int startX = 50;
-//        int startY = 100;
-//
-//        for (int i = 0; i < pitCount; i++) {
-//            int pitX = startX + (i % 6) * pitWidth;
-//            int pitY = i < 6 ? startY : startY + pitHeight + 20;
-//            Rectangle pitBounds = new Rectangle(pitX, pitY, pitWidth, pitHeight);
-//            if (pitBounds.contains(x, y)) {
-//                return i;
-//            }
-//        }
-//        return -1;
-//    }
 
     /**
      * ask player for amount of stones

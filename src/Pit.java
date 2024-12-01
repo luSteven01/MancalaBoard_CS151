@@ -1,9 +1,21 @@
+/**
+ * Fall 2024 - Doctor Kim's CS151
+ * CS151 Team Project - Mancala
+ * @author Monica Zhang
+ * @author Billy Porras-Molina
+ * @author Steven Lu
+ * @version 1.0 11/26/24
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * This class models a pit on the mancala game board.
+ */
 public class Pit extends JPanel {
 
     private static final int PIT_SIZE = 60; // Fixed size for pits
@@ -24,26 +36,6 @@ public class Pit extends JPanel {
         MouseListeners listeners = new MouseListeners();
         addMouseListener(listeners);
     }
-
-    public Pit(int initialStones) {
-        this.stones = initialStones;
-        this.stoneIcons = new ArrayList<>();
-
-        setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Align stones neatly
-        setPreferredSize(new Dimension(PIT_SIZE, PIT_SIZE));
-        setMaximumSize(new Dimension(PIT_SIZE, PIT_SIZE));
-        setMinimumSize(new Dimension(PIT_SIZE, PIT_SIZE));
-        setBackground(Color.LIGHT_GRAY); // Default pit background
-        updateStones(initialStones);
-
-        MouseListeners listeners = new MouseListeners();
-        addMouseListener(listeners);
-    }
-
-//    public void addStones(int count) {
-//        stones += count;
-//        updateStones(stones);
-//    }
 
     public int removeStones() {
         int removed = stones;
