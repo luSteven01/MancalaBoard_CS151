@@ -20,6 +20,11 @@ public class MancalaController extends JPanel {
     private JButton undoButton;
     private List<Pit> pits;
 
+    /**
+     * Constructs the MancalaController and links it to given game model
+     * Initializes UI components and sets up interactions between player and game logic
+     * @param model The MancalaModel providing game logic and state
+     */
     public MancalaController(MancalaModel model) {
         super();
         this.model = model;

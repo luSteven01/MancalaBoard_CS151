@@ -18,6 +18,11 @@ public class MancalaView extends JPanel {
     private final MancalaModel model;
     private BoardPanel boardPanel;
 
+    /**
+     * constructs MancalaView linked to given model
+     *
+     * @param model The MancalaModel providing game logic and data
+     */
     public MancalaView(MancalaModel model) {
         this.model = model;
 
