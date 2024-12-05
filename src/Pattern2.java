@@ -19,6 +19,10 @@ public class Pattern2 implements BoardPatternStrategy {
         return Color.BLUE;
     }
 
+    /**
+     * Provides color of the pits on game board
+     * @return A Color representing the pit color
+     */
     @Override
     public Color pitColor()
     {

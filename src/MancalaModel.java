@@ -34,6 +34,9 @@ public class MancalaModel {
     private int undoCountB = 0;
     private final int MAX_UNDO = 3;
 
+    /**
+     * Constructs a MancalaModel and initializes the game state
+     */
     public MancalaModel() {
         listeners = new ArrayList<ChangeListener>();
         pits = new ArrayList<Pit>();
@@ -44,6 +47,9 @@ public class MancalaModel {
         currentPlayer = "A";
     }
 
+    /**
+     * Initializes the board with empty pits
+     */
     private void initializeEmptyPits() {
         updatePreviousBoardState();
         for (int i = 0; i < 6; i++) {
@@ -62,15 +68,20 @@ public class MancalaModel {
         updateListeners();
     }
 
+    /**
+     * Initializes the pits with the given number of stones per pit
+     *
+     * @param stonesPerPit Number of stones to place in each pit
+     */
     public void initializePitsStones(int stonesPerPit) {
         updatePreviousBoardState();
 
-        for (int i = 0; i < 6; i++) { // player B's pits
+        for (int i = 0; i < 6; i++) {
             Pit pit = pits.get(i);
             pit.updateStones(stonesPerPit);
         }
 
-        for (int i = 7; i < 13; i++) { // player A's pits
+        for (int i = 7; i < 13; i++) {
             Pit pit = pits.get(i);
             pit.updateStones(stonesPerPit);
         }
@@ -79,26 +90,55 @@ public class MancalaModel {
         updateListeners();
     }
 
+    /**
+     * Gets Player A's Mancala pit
+     *
+     * @return Mancala pit for Player A
+     */
     public Pit getMancalaA() {
         return mancalaA;
     }
 
+    /**
+     * Gets Player B's Mancala pit
+     *
+     * @return Mancala pit for Player B
+     */
     public Pit getMancalaB() {
         return mancalaB;
     }
 
+    /**
+     * Notifies listeners to update the game screen
+     */
     public void setGameScreen() {
         updateListeners();
     }
 
+    /**
+     * Checks if stones are initialized
+     *
+     * @return true if stones are initialized, false if not
+     */
     public boolean isStonesInitialized() {
         return stonesInitialized;
     }
 
+    /**
+     * Sets the board pattern strategy
+     *
+     * @param boardPattern The board pattern strategy to use
+     */
     public void setBoardPattern(BoardPatternStrategy boardPattern) {
         this.boardPattern = boardPattern;
     }
 
+    /**
+     * Checks if the player's turn is valid
+     *
+     * @param pit The selected pit
+     * @return true if the turn is valid, false if not
+     */
     private boolean isPlayerTurnValid(Pit pit) {
         int pitIndex = pits.indexOf(pit);
         if (pitIndex == -1) {
@@ -120,6 +160,11 @@ public class MancalaModel {
         return true;
     }
 
+    /**
+     * Processes a move for the current player
+     *
+     * @param pit The selected pit to play
+     */
     public void makeMove(Pit pit) {
         if (!isPlayerTurnValid(pit)) {
             return;
@@ -174,6 +219,9 @@ public class MancalaModel {
         updateListeners();
     }
 
+    /**
+     * Allows the current player to undo the last move
+     */
     public void undoMove() {
         if ((currentPlayer.equals("A") && undoCountA >= MAX_UNDO) ||
                 (currentPlayer.equals("B") && undoCountB >= MAX_UNDO)) {
@@ -191,7 +239,11 @@ public class MancalaModel {
         updateListeners();
     }
 
-
+    /**
+     * Handles capturing stones when a valid capture move is made
+     *
+     * @param currentIndex The index of the pit where the move ends
+     */
     private void handleCapture(int currentIndex) {
         if ((currentPlayer.equals("A") && currentIndex >= 7 && currentIndex <= 12 && pits.get(currentIndex).getStones() == 1) ||
                 (currentPlayer.equals("B") && currentIndex >= 0 && currentIndex <= 5 && pits.get(currentIndex).getStones() == 1)) {
@@ -205,28 +257,55 @@ public class MancalaModel {
         }
     }
 
+    /**
+     * Retrieves the current board pattern strategy
+     *
+     * @return The current BoardPatternStrategy
+     */
     public BoardPatternStrategy getBoardPattern() {
         return boardPattern;
     }
 
+    /**
+     * Retrieves the current player
+     *
+     * @return A string representing the current player, A or B
+     */
     public String getCurrentPlayer() {
         return currentPlayer;
     }
 
+    /**
+     * Adds a ChangeListener to model
+     * Listeners are notified of any updates to the model's state
+     *
+     * @param cl the ChangeListener to add
+     */
     public void addChangeListener(ChangeListener cl) {
         listeners.add(cl);
     }
 
+    /**
+     * Updates all listeners with current state of the model
+     */
     private void updateListeners() {
         ChangeEvent event = new ChangeEvent(this);
         for (ChangeListener l : listeners)
             l.stateChanged(event);
     }
 
-    public List<Pit> getPits() {
+    /**
+     * Retrieves the list of pits on the board
+     * @return A List of Pit objects
+     */
+    public List<Pit> getPits()
+    {
         return pits;
     }
 
+    /**
+     * Saves current state of the board for undo functionality
+     */
     private void updatePreviousBoardState() {
         previousState = new ArrayList<>();
         for (Pit p : pits) {
@@ -234,10 +313,17 @@ public class MancalaModel {
         }
     }
 
+    /**
+     * Switches current player to the next player
+     */
     private void switchPlayer() {
         currentPlayer = currentPlayer.equals("A") ? "B" : "A";
     }
 
+    /**
+     * Checks if the game is over
+     * @return true if game is over, false if not
+     */
     private boolean checkGameOver() {
         boolean playerAEmpty = true;
         boolean playerBEmpty = true;
@@ -262,6 +348,10 @@ public class MancalaModel {
         return false;
     }
 
+    /**
+     * Ends the game and calculates the final scores for both players
+     * Then displays the winner or a tie message to the players
+     */
     private void endGame() {
         for (int i = 0; i <= 5; i++) {
             mancalaB.increment(pits.get(i).removeStones());
