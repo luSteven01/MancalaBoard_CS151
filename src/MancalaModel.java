@@ -34,6 +34,7 @@ public class MancalaModel {
     private int undoCountB = 0;
     private final int MAX_UNDO = 3;
 
+
     public MancalaModel() {
         listeners = new ArrayList<ChangeListener>();
         pits = new ArrayList<Pit>();

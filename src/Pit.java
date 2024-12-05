@@ -63,7 +63,7 @@ public class Pit extends JPanel {
             JLabel stone = new JLabel();
             stone.setPreferredSize(new Dimension(10, 10)); // Size of each stone
             stone.setOpaque(true);
-            stone.setBackground(Color.RED);
+            stone.setBackground(Color.BLACK);
             stone.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             stoneIcons.add(stone);
             add(stone);
