@@ -163,7 +163,7 @@ public class MancalaModel {
     }
 
     /**
-     * Processes a move for the current player
+     * Processes a move for the current player and keeps track of player
      *
      * @param pit The selected pit to play
      */
