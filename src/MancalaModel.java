@@ -33,6 +33,8 @@ public class MancalaModel {
     private int undoCountA = 0;
     private int undoCountB = 0;
     private final int MAX_UNDO = 3;
+    private String lastMovePlayer = null; // Track the player who made the last move
+    private boolean canUndo = false;
 
     /**
      * Constructs a MancalaModel and initializes the game state
@@ -161,7 +163,7 @@ public class MancalaModel {
     }
 
     /**
-     * Processes a move for the current player
+     * Processes a move for the current player and keeps track of player
      *
      * @param pit The selected pit to play
      */
@@ -169,17 +171,10 @@ public class MancalaModel {
         if (!isPlayerTurnValid(pit)) {
             return;
         }
+
         updatePreviousBoardState();
 
-        int pitNumber = -1;
-        int pitSize = pits.size();
-        for (int i = 0; i < pitSize; i++) {
-            if (pits.get(i) == pit) {
-                pitNumber = i;
-                break;
-            }
-        }
-
+        int pitNumber = pits.indexOf(pit);
         if (pitNumber == -1) {
             JOptionPane.showMessageDialog(null, "Invalid pit selection", "Invalid move", JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -189,8 +184,8 @@ public class MancalaModel {
         pitNumber += 1;
 
         while (stones > 0) {
-            if (pitNumber >= pitSize) {
-                pitNumber = pitNumber - pitSize;
+            if (pitNumber >= pits.size()) {
+                pitNumber = 0;
             }
 
             if ((currentPlayer.equals("A") && pitNumber == 6) || (currentPlayer.equals("B") && pitNumber == 13)) {
@@ -211,21 +206,38 @@ public class MancalaModel {
             return;
         }
 
+        canUndo = true;
+        lastMovePlayer = currentPlayer;
+
         if ((currentPlayer.equals("A") && pitNumber == 13) || (currentPlayer.equals("B") && pitNumber == 6)) {
             updateListeners();
             return;
         }
+
         switchPlayer();
+        undoCountA = currentPlayer.equals("A") ? 0 : undoCountA;
+        undoCountB = currentPlayer.equals("B") ? 0 : undoCountB;
+
         updateListeners();
     }
+
 
     /**
      * Allows the current player to undo the last move
      */
     public void undoMove() {
-        if ((currentPlayer.equals("A") && undoCountA >= MAX_UNDO) ||
-                (currentPlayer.equals("B") && undoCountB >= MAX_UNDO)) {
-            JOptionPane.showMessageDialog(null, "Undo limit has been reached. No more allowed.", "Invalid move", JOptionPane.INFORMATION_MESSAGE);
+        if (!canUndo) {
+            JOptionPane.showMessageDialog(null, "Undo is not allowed at this time.", "Undo Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (lastMovePlayer.equals("A") && undoCountA >= MAX_UNDO) {
+            JOptionPane.showMessageDialog(null, "Player A has reached the undo limit for this turn.", "Undo Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (lastMovePlayer.equals("B") && undoCountB >= MAX_UNDO) {
+            JOptionPane.showMessageDialog(null, "Player B has reached the undo limit for this turn.", "Undo Error", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -233,11 +245,20 @@ public class MancalaModel {
             pits.get(i).updateStones(previousState.get(i).getStones());
         }
 
-        if (currentPlayer.equals("A")) undoCountA++;
-        else undoCountB++;
+        currentPlayer = lastMovePlayer;
 
+        if (lastMovePlayer.equals("A")) {
+            undoCountA++;
+        } else {
+            undoCountB++;
+        }
+
+        canUndo = false;
+
+        // Notify listeners
         updateListeners();
     }
+
 
     /**
      * Handles capturing stones when a valid capture move is made
