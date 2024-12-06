@@ -24,6 +24,6 @@ public class Pattern1 implements BoardPatternStrategy {
      */
     public Color pitColor()
     {
-        return Color.WHITE;
+        return Color.GREEN;
     }
 }
